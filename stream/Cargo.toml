@@ -1,0 +1,40 @@
+[package]
+name = "stream"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+#protobuf = { version = "3.0.0-alpha.1", git = "https://github.com/stepancheg/rust-protobuf" }
+protobuf = "3.2.0"
+tokio = { version = "1.12.0", features = ["full"] }
+tokio-util = { version = "0.6.8", features = ["full"] }
+native-tls = {git = "https://github.com/sfackler/rust-native-tls"}
+tokio-native-tls = "0.3.1"
+
+futures = "0.3.17"
+bytes = "1.1.0"
+quinn = "0.7.2"
+rcgen = "0.8.14"
+p12 = "0.2.0"
+anyhow = "1.0.44"
+
+rsa = "0.5.0"
+rand = "0.8.4"
+sha2 = "0.9.8"
+
+#对称加密 pc使用aes 移动端使用chacha20，安全性来说aes-gcm更好，在pc上由于指令集的优化 aes-gcm128性能更好
+#aes = "0.7.5"
+aes-gcm = "0.9.4"
+#block-modes = "0.8.1"
+#并发集合
+dashmap = "4.0.2"
+
+uuid = { version = "0.8", features = ["serde", "v4"] }
+
+log = "0.4.14"
+[build-dependencies]
+protobuf-codegen-pure = "2.28.0"
+#protobuf-codegen-pure = { version = "3.0.0-alpha.1", git = "https://github.com/stepancheg/rust-protobuf" }

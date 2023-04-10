@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+message RegisterPeer {
+  string user_id = 1;
+  string server_key = 2;
+  bytes cert = 3;
+  bytes pub_key = 4;
+  string u_id = 5;
+}
+
+message RegisterPeerResponse {
+  enum Code {
+    Success = 0;
+    Fail = 1;
+    Error = 2;
+    Repeat = 3;
+    KeyNotMatch = 4;
+  }
+  Code code = 1;
+  string message = 2;
+}
+message RequestRelay { string peer_id = 1; }
+message RelayResponse {
+  string ralay_id = 1;
+  string relay_addr = 2;
+  bool is_control = 3;
+  bytes peer_pub_key = 4;
+  string peer_id = 5;
+
+  bytes ralay_pub_key = 6;
+  enum Code {
+    Success = 0;
+    Fail = 1;
+    Offline = 2;
+  }
+  Code code = 7;
+  string message = 8;
+}
+message Ping {}
+
+
+message RendezvousMessage {
+  oneof union {
+    RegisterPeer register_peer = 1;
+    RegisterPeerResponse register_peer_response = 2;
+    RequestRelay request_relay = 3;
+    RelayResponse relay_response = 4;
+    Ping ping = 5;
+  }
+}
+
+
+
+//中继
+message RelayConn {
+  string relay_id = 1;
+  bytes key = 2;
+  bytes nonce = 3;
+}
+message RelayStart { uint64 rand = 1; }
+
+message RelayMessage {
+  oneof union {
+    RelayConn relay_conn = 1;
+    RelayStart relay_start = 2;
+  }
+}

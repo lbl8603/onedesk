@@ -1,0 +1,88 @@
+syntax = "proto3";
+message ClientHello {
+  string my_id = 1;
+  string peer_id = 2;
+  uint64 rand1 = 3;
+  uint64 rand2 = 4;
+  bytes key = 5;
+  bytes nonce = 6;
+}
+
+message ServerHello {
+  uint64 rand1 = 1;
+  uint64 rand2 = 2;
+  bytes hash = 3;
+}
+
+message LoginRequest {
+  bytes password = 1;
+  bytes hash = 2;
+}
+
+message LoginResponse {
+  enum Code {
+    NotMatch = 0;
+    Success = 1;
+    Frequently = 2;
+  }
+  Code code = 1;
+  string error = 2;
+}
+
+message RemoteMessage {
+  oneof union {
+    ClientHello client_hello = 1;
+    ServerHello server_hello = 2;
+    LoginRequest login_request = 3;
+    LoginResponse login_response = 4;
+  }
+}
+//通道消息
+enum ChannelControl {
+  Create = 0;
+  Destroy = 1;
+  Data = 2;
+}
+enum ChannelType {
+  NoDefine = 0;
+  Video = 1;
+  KeyEvent = 2;
+  MouseEvent = 3;
+}
+enum ChannelPower {
+  Both = 0;
+  Read = 1;
+  Write = 2;
+}
+
+message ChannelMover {
+  uint32 id = 1;
+  ChannelControl control = 2;
+  ChannelType channel_type = 3;
+  ChannelPower channel_power = 4;
+  bytes data = 5;
+}
+
+message KeyEvent {
+  uint32 key = 1;
+  enum Active {
+    Click = 0;
+    Down = 1;
+    Up = 2;
+  }
+  Active active = 2;
+}
+message MouseEvent {
+  uint32 key = 1;
+  enum Active {
+    Click = 0;
+    Down = 1;
+    Up = 2;
+    Move = 3;
+    ScrollY = 4;
+  }
+  Active active = 2;
+  int32 move_x = 3;
+  int32 move_y = 4;
+  int32 scroll_len = 5;
+}
